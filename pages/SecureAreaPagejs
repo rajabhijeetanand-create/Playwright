@@ -1,0 +1,39 @@
+import CommonActions from "../framework/base/CommonActions.js";
+
+export default class SecureAreaPage extends CommonActions {
+
+    #secureAreaHdr;
+    #logoutLnk;
+    #successMsg;
+
+    constructor(page) {
+        super(page);
+
+        this.#secureAreaHdr = page.getByRole("heading", {
+            name: "Secure Area"
+        });
+
+        this.#logoutLnk = page.getByRole("link", {
+            name: "Logout"
+        });
+
+        this.#successMsg = page.locator(".flash.success");
+    }
+
+    async logout() {
+        await this.click(this.#logoutLnk);
+    }
+
+    async getSecureAreaHeader() {
+        return await this.getText(this.#secureAreaHdr);
+    }
+
+    async getLogoutMessage() {
+        return await this.getText(this.#successMsg);
+    }
+
+    async isLogoutVisible() {
+        return await this.isVisible(this.#logoutLnk);
+    }
+
+}
