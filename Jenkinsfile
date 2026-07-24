@@ -2,6 +2,10 @@ pipeline {
 
     agent any
 
+    tools {
+        nodejs 'NodeJS20'
+    }
+
     parameters {
 
         choice(
@@ -19,10 +23,8 @@ pipeline {
     }
 
     environment {
-
         APP_USERNAME = credentials('APP_USERNAME')
         APP_PASSWORD = credentials('APP_PASSWORD')
-
     }
 
     stages {
@@ -39,20 +41,17 @@ pipeline {
             }
         }
 
-        stage('Install Playwright Browsers') {
+        stage('Install Playwright Browser') {
             steps {
-                bat 'npx playwright install'
+                bat "npx playwright install ${params.BROWSER}"
             }
         }
 
         stage('Execute Playwright Tests') {
             steps {
-
-                bat """
-                    set ENV=%ENV%
-                    npx playwright test --project=%BROWSER%
-                """
-
+                withEnv(["ENV=${params.ENV}"]) {
+                    bat "npx playwright test --project=${params.BROWSER}"
+                }
             }
         }
 
@@ -62,28 +61,31 @@ pipeline {
 
         always {
 
-            archiveArtifacts artifacts: 'playwright-report/**', fingerprint: true
+            archiveArtifacts(
+                artifacts: 'playwright-report/**',
+                fingerprint: true
+            )
 
-            archiveArtifacts artifacts: 'test-results/**', fingerprint: true, allowEmptyArchive: true
+            archiveArtifacts(
+                artifacts: 'test-results/**',
+                fingerprint: true,
+                allowEmptyArchive: true
+            )
 
             cleanWs()
 
         }
 
         success {
-
             echo '========================================='
             echo 'Playwright Tests Executed Successfully'
             echo '========================================='
-
         }
 
         failure {
-
             echo '========================================='
             echo 'Playwright Test Execution Failed'
             echo '========================================='
-
         }
 
     }
