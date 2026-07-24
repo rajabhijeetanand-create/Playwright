@@ -1,3 +1,5 @@
+import CommonActions from "../framework/base/CommonActions.js";
+
 export default class LoginPage extends CommonActions {
 
     #usernameTxt;
