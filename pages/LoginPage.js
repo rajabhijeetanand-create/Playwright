@@ -46,3 +46,4 @@ export default class LoginPage extends CommonActions {
         return await this.getText(this.#errorMsg);
     }
 }
+//end
