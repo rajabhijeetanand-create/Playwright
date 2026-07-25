@@ -82,6 +82,43 @@ pipeline {
                 reportName: 'Playwright HTML Report'
             ])
 
+            // Send Email After Every Build
+            emailext(
+                to: 'rajabhijeetanand@gmail.com',
+                subject: "Playwright Build #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
+                mimeType: 'text/html',
+                body: """
+                    <h2>Playwright Automation Execution Report</h2>
+
+                    <table border="1" cellpadding="6" cellspacing="0">
+                        <tr><td><b>Project</b></td><td>${env.JOB_NAME}</td></tr>
+                        <tr><td><b>Build Number</b></td><td>${env.BUILD_NUMBER}</td></tr>
+                        <tr><td><b>Status</b></td><td>${currentBuild.currentResult}</td></tr>
+                        <tr><td><b>Environment</b></td><td>${params.ENV}</td></tr>
+                        <tr><td><b>Browser</b></td><td>${params.BROWSER}</td></tr>
+                    </table>
+
+                    <br>
+
+                    <a href="${env.BUILD_URL}Playwright_HTML_Report/">
+                        View Playwright HTML Report
+                    </a>
+
+                    <br><br>
+
+                    <a href="${env.BUILD_URL}artifact/playwright-report/index.html">
+                        Download Report
+                    </a>
+
+                    <br><br>
+
+                    Jenkins Build:
+                    <a href="${env.BUILD_URL}">
+                        ${env.BUILD_URL}
+                    </a>
+                """
+            )
+
             cleanWs()
 
         }
