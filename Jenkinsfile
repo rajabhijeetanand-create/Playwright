@@ -72,6 +72,16 @@ pipeline {
                 allowEmptyArchive: true
             )
 
+            // Publish Playwright HTML Report
+            publishHTML(target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'playwright-report',
+                reportFiles: 'index.html',
+                reportName: 'Playwright HTML Report'
+            ])
+
             cleanWs()
 
         }
