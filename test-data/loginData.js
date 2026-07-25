@@ -1,8 +1,8 @@
 export default {
 
     validUser: {
-        username: process.env.APP_USERNAME,
-        password: process.env.APP_PASSWORD
+        username: process.env.APP_USERNAME || "tomsmith",
+        password: process.env.APP_PASSWORD || "SuperSecretPassword!"
     },
 
     invalidUser: {
@@ -12,11 +12,11 @@ export default {
 
     blankUser: {
         username: "",
-        password: process.env.APP_PASSWORD
+        password: process.env.APP_PASSWORD || "SuperSecretPassword!"
     },
 
     blankPassword: {
-        username: process.env.APP_USERNAME,
+        username: process.env.APP_USERNAME || "tomsmith",
         password: ""
     }
 
